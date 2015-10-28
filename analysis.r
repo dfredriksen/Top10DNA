@@ -4,14 +4,14 @@ library(plyr)
 library(gridExtra)
 library(lubridate)
 library(data.table)
-Top10 <- read.csv("Top10.csv")
-PrimaryEmotions <- table(Top10$primary, Top10$valence)
+Random <- read.csv("Random.csv")
+PrimaryEmotions <- table(Random$primary, Random$valence)
 barplot(PrimaryEmotions, main="Primary Emotion Frequency By Valence", xlab="Valence", ylab="Frequency", col=c("gray", "green", "blue","yellow","red","black","purple","white"), names.arg=c("Negative","Neutral","Positive"), legend = c("Neutral","Happy","Sad","Fear","Anger","Disgust","Surprise","multi"), ylim=c(0,450), beside=TRUE)
 dev.copy2pdf(file='PrimaryEmotions.pdf')
 
 emotionColumns <- c("neutral","happy","sad","fear","anger","disgust","surprise")
 emotionColumnsValence <- c("neutral","happy","sad","fear","anger","disgust","surprise","valence")
-Emotions <- Top10[, match(emotionColumnsValence, names(Top10))]
+Emotions <- Random[, match(emotionColumnsValence, names(Random))]
 Emotions$valence <- as.character(Emotions$valence)
 Melted <- melt(Emotions, id.vars = "valence", measure.vars = emotionColumns)
 Melted <- Melted[Melted$value > 0,]
@@ -51,56 +51,56 @@ do.call(grid.arrange, c(chartList, list(ncol=2)))
 dev.copy2pdf(file='EmotionsVsWeight.pdf', paper="a4r")
 
 colSds <- function(x) {x}
-Top10Formatted <- Top10
-Top10Formatted$date <- parse_date_time(Top10Formatted$date, orders="ymd")
-Top10Formatted$month <- format(Top10Formatted$date, "%m")
-Top10Summary <- sapply(split(Top10Formatted[,c(9:15)], list(Top10Formatted$month, Top10Formatted$valence)), FUN=colMeans)
-Top10Summary <- t(Top10Summary)
+RandomFormatted <- Random
+RandomFormatted$date <- parse_date_time(RandomFormatted$date, orders="ymd")
+RandomFormatted$month <- format(RandomFormatted$date, "%m")
+RandomSummary <- sapply(split(RandomFormatted[,c(9:15)], list(RandomFormatted$month, RandomFormatted$valence)), FUN=colMeans)
+RandomSummary <- t(RandomSummary)
 
-#Top10SummaryNeut <- as.data.frame(Top10Formatted[,c("neutral","month","valence")])
-#Top10SummaryHappy <- Top10Formatted[,c("happy","month","valence")]
-#Top10SummarySad <- Top10Formatted[,c("sad","month","valence")]
-#Top10SummaryFear <- Top10Formatted[,c("fear","month","valence")]
-#Top10SummaryAnger <- Top10Formatted[,c("anger","month","valence")]
-#Top10SummaryDisgust <- Top10Formatted[,c("disgust","month","valence")]
-#Top10SummarySurprise <- Top10Formatted[,c("surprise","month","valence")]
+#RandomSummaryNeut <- as.data.frame(RandomFormatted[,c("neutral","month","valence")])
+#RandomSummaryHappy <- RandomFormatted[,c("happy","month","valence")]
+#RandomSummarySad <- RandomFormatted[,c("sad","month","valence")]
+#RandomSummaryFear <- RandomFormatted[,c("fear","month","valence")]
+#RandomSummaryAnger <- RandomFormatted[,c("anger","month","valence")]
+#RandomSummaryDisgust <- RandomFormatted[,c("disgust","month","valence")]
+#RandomSummarySurprise <- RandomFormatted[,c("surprise","month","valence")]
 
-#Top10SummaryNeutSd <- sapply(split(Top10SummaryNeut[,1], list(Top10SummaryNeut$month, Top10SummaryNeut$valence)), FUN=sd)
-#Top10SummaryHappySd <- t(sapply(split(Top10SummaryHappy[,1], list(Top10SummaryHappy$month, Top10SummaryHappy$valence)), FUN=sd))
-#Top10SummarySadSd <- t(sapply(split(Top10SummarySad[,1], list(Top10SummarySad$month, Top10SummarySad$valence)), FUN=sd))
-#Top10SummaryFearSd <- t(sapply(split(Top10SummaryFear[,1], list(Top10SummaryFear$month, Top10SummaryFear$valence)), FUN=sd))
-#Top10SummaryAngerSd <- t(sapply(split(Top10SummaryAnger[,1], list(Top10SummaryAnger$month, Top10SummaryAnger$valence)), FUN=sd))
-#Top10SummaryDisgustSd <- t(sapply(split(Top10SummaryDisgust[,1], list(Top10SummaryDisgust$month, Top10SummaryDisgust$valence)), FUN=sd))
-#Top10SummarySurpriseSd <- t(sapply(split(Top10SummarySurprise[,1], list(Top10SummarySurprise$month, Top10SummarySurprise$valence)), FUN=sd))
+#RandomSummaryNeutSd <- sapply(split(RandomSummaryNeut[,1], list(RandomSummaryNeut$month, RandomSummaryNeut$valence)), FUN=sd)
+#RandomSummaryHappySd <- t(sapply(split(RandomSummaryHappy[,1], list(RandomSummaryHappy$month, RandomSummaryHappy$valence)), FUN=sd))
+#RandomSummarySadSd <- t(sapply(split(RandomSummarySad[,1], list(RandomSummarySad$month, RandomSummarySad$valence)), FUN=sd))
+#RandomSummaryFearSd <- t(sapply(split(RandomSummaryFear[,1], list(RandomSummaryFear$month, RandomSummaryFear$valence)), FUN=sd))
+#RandomSummaryAngerSd <- t(sapply(split(RandomSummaryAnger[,1], list(RandomSummaryAnger$month, RandomSummaryAnger$valence)), FUN=sd))
+#RandomSummaryDisgustSd <- t(sapply(split(RandomSummaryDisgust[,1], list(RandomSummaryDisgust$month, RandomSummaryDisgust$valence)), FUN=sd))
+#RandomSummarySurpriseSd <- t(sapply(split(RandomSummarySurprise[,1], list(RandomSummarySurprise$month, RandomSummarySurprise$valence)), FUN=sd))
 
-Top10Final <- data.frame(Top10Summary)
-Top10Final <- setDT(Top10Final, keep.rownames = TRUE)[]
-Split <- t(as.data.frame(strsplit(Top10Final$rn, split="\\.")))
-Top10Final$month <- Split[,1]
-Top10Final$valence <- Split[,2]
-Top10Final$rn <- NULL
-SampleCount <- count(Top10Formatted, c("month","valence"))
+RandomFinal <- data.frame(RandomSummary)
+RandomFinal <- setDT(RandomFinal, keep.rownames = TRUE)[]
+Split <- t(as.data.frame(strsplit(RandomFinal$rn, split="\\.")))
+RandomFinal$month <- Split[,1]
+RandomFinal$valence <- Split[,2]
+RandomFinal$rn <- NULL
+SampleCount <- count(RandomFormatted, c("month","valence"))
 SampleCountNeg <- SampleCount[SampleCount$valence == "-1",c("month","freq")]
 SampleCountNeu <- SampleCount[SampleCount$valence == "0",c("month","freq")]
 SampleCountPos <- SampleCount[SampleCount$valence == "1",c("month","freq")]
-Top10FinalNeg <- Top10Final[Top10Final$valence == "-1",]
-Top10FinalNeg$valence <- NULL
-Top10FinalNeu <- Top10Final[Top10Final$valence == "0",]
-Top10FinalNeu$valence <- NULL
-Top10FinalPos <- Top10Final[Top10Final$valence == "1",]
-Top10FinalPos$valence <- NULL
-Top10FinalNeg$count <- SampleCountNeg$freq
-Top10FinalNeu$count <- SampleCountNeu$freq
-Top10FinalNeu <- Top10FinalNeu[1:9,]
-Top10FinalPos$count <- SampleCountPos$freq
+RandomFinalNeg <- RandomFinal[RandomFinal$valence == "-1",]
+RandomFinalNeg$valence <- NULL
+RandomFinalNeu <- RandomFinal[RandomFinal$valence == "0",]
+RandomFinalNeu$valence <- NULL
+RandomFinalPos <- RandomFinal[RandomFinal$valence == "1",]
+RandomFinalPos$valence <- NULL
+RandomFinalNeg$count <- SampleCountNeg$freq
+RandomFinalNeu$count <- SampleCountNeu$freq
+RandomFinalNeu <- RandomFinalNeu[1:9,]
+RandomFinalPos$count <- SampleCountPos$freq
 
 VectorTotal <- c(0,0,0,0,0,0,0)
-maxRange <- nrow(Top10FinalNeg)
-CountSum <- sum(Top10FinalNeg$count)
+maxRange <- nrow(RandomFinalNeg)
+CountSum <- sum(RandomFinalNeg$count)
 for(i in 1:maxRange)
 {
-  Count <- Top10FinalNeg$count
-  Vector <- as.numeric(Top10FinalNeg[i,])
+  Count <- RandomFinalNeg$count
+  Vector <- as.numeric(RandomFinalNeg[i,])
   Vector <- Vector[1:7]
   VectorWeighted <- Vector *  (Count[i] / CountSum)
   VectorTotal <- VectorTotal + VectorWeighted
@@ -111,12 +111,12 @@ NegTotal <- cbind(NegTotal,"-1")
 colnames(NegTotal) <- emotionColumnsValence
 
 VectorTotal <- c(0,0,0,0,0,0,0)
-maxRange <- nrow(Top10FinalNeu)
-CountSum <- sum(Top10FinalNeu$count)
+maxRange <- nrow(RandomFinalNeu)
+CountSum <- sum(RandomFinalNeu$count)
 for(i in 1:maxRange)
 {
-  Count <- Top10FinalNeu$count
-  Vector <- as.numeric(Top10FinalNeu[i,])
+  Count <- RandomFinalNeu$count
+  Vector <- as.numeric(RandomFinalNeu[i,])
   Vector <- Vector[1:7]
   VectorWeighted <- Vector *  (Count[i] / CountSum)
   VectorTotal <- VectorTotal + VectorWeighted
@@ -127,12 +127,12 @@ NeuTotal = cbind(NeuTotal,"0")
 colnames(NeuTotal) <- emotionColumnsValence
 
 VectorTotal <- c(0,0,0,0,0,0,0)
-maxRange <- nrow(Top10FinalPos)
-CountSum <- sum(Top10FinalPos$count)
+maxRange <- nrow(RandomFinalPos)
+CountSum <- sum(RandomFinalPos$count)
 for(i in 1:maxRange)
 {
-  Count <- Top10FinalPos$count
-  Vector <- as.numeric(Top10FinalPos[i,])
+  Count <- RandomFinalPos$count
+  Vector <- as.numeric(RandomFinalPos[i,])
   Vector <- Vector[1:7]
   VectorWeighted <- Vector *  (Count[i] / CountSum)
   VectorTotal <- VectorTotal + VectorWeighted
@@ -173,8 +173,8 @@ plotPositive <- qplot(
 
 chartList <- list(plotNegative, plotNeutral, plotPositive)
 do.call(grid.arrange, c(chartList, list(ncol=2)))
-dev.copy2pdf(file='AverageTop10Weights.pdf', width=10)
+dev.copy2pdf(file='AverageRandomWeights.pdf', width=10)
 
-#barplot(PrimaryEmotions, main="Primary Emotion Frequency By Valence", xlab="Valence", ylab="Frequency", col=c("gray", "green", "blue","yellow","red","black","purple","white"), names.arg=c("Negative","Neutral","Positive"), legend = c("Neutral","Happy","Sad","Fear","Anger","Disgust","Surprise","multi"), ylim=c(0,450), beside=TRUE)
-#dev.copy2pdf(file='PrimaryEmotions.pdf')
+barplot(PrimaryEmotions, main="Primary Emotion Frequency By Valence", xlab="Valence", ylab="Frequency", col=c("gray", "green", "blue","yellow","red","black","purple","white"), names.arg=c("Negative","Neutral","Positive"), legend = c("Neutral","Happy","Sad","Fear","Anger","Disgust","Surprise","multi"), ylim=c(0,450), beside=TRUE)
+dev.copy2pdf(file='PrimaryEmotions.pdf')
 
