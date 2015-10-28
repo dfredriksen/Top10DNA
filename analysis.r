@@ -175,6 +175,6 @@ chartList <- list(plotNegative, plotNeutral, plotPositive)
 do.call(grid.arrange, c(chartList, list(ncol=2)))
 dev.copy2pdf(file='AverageRandomWeights.pdf', width=10)
 
-barplot(PrimaryEmotions, main="Primary Emotion Frequency By Valence", xlab="Valence", ylab="Frequency", col=c("gray", "green", "blue","yellow","red","black","purple","white"), names.arg=c("Negative","Neutral","Positive"), legend = c("Neutral","Happy","Sad","Fear","Anger","Disgust","Surprise","multi"), ylim=c(0,450), beside=TRUE)
-dev.copy2pdf(file='PrimaryEmotions.pdf')
+#barplot(PrimaryEmotions, main="Primary Emotion Frequency By Valence", xlab="Valence", ylab="Frequency", col=c("gray", "green", "blue","yellow","red","black","purple","white"), names.arg=c("Negative","Neutral","Positive"), legend = c("Neutral","Happy","Sad","Fear","Anger","Disgust","Surprise","multi"), ylim=c(0,450), beside=TRUE)
+#dev.copy2pdf(file='PrimaryEmotions.pdf')
 
