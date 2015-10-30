@@ -398,9 +398,9 @@ Top10$primary_emotion <- NULL
 RandomNeg <- Random[Random$valence == "-1",2:8]
 RandomNeu <- Random[Random$valence == "0",2:8]
 RandomPos <- Random[Random$valence == "1",2:8]
-Top10Neg <- Random[Random$valence == "-1",2:8]
-Top10Neu <- Random[Random$valence == "0",2:8]
-Top10Pos <- Random[Random$valence == "1",2:8]
+Top10Neg <- Top10[Top10$valence == "-1",2:8]
+Top10Neu <- Top10[Top10$valence == "0",2:8]
+Top10Pos <- Top10[Top10$valence == "1",2:8]
 
 t.test(RandomNeg$neutral, Top10Neg$neutral, var.equal=TRUE, paired=FALSE)
 t.test(RandomNeg$happy, Top10Neg$happy, var.equal=TRUE, paired=FALSE)
@@ -409,6 +409,22 @@ t.test(RandomNeg$fear, Top10Neg$fear, var.equal=TRUE, paired=FALSE)
 t.test(RandomNeg$anger, Top10Neg$anger, var.equal=TRUE, paired=FALSE)
 t.test(RandomNeg$disgust, Top10Neg$disgust, var.equal=TRUE, paired=FALSE)
 t.test(RandomNeg$surprise, Top10Neg$surprise, var.equal=TRUE, paired=FALSE)
+
+t.test(RandomNeu$neutral, Top10Neu$neutral, var.equal=TRUE, paired=FALSE)
+t.test(RandomNeu$happy, Top10Neu$happy, var.equal=TRUE, paired=FALSE)
+t.test(RandomNeu$sad, Top10Neu$sad, var.equal=TRUE, paired=FALSE)
+t.test(RandomNeu$fear, Top10Neu$fear, var.equal=TRUE, paired=FALSE)
+t.test(RandomNeu$anger, Top10Neu$anger, var.equal=TRUE, paired=FALSE)
+t.test(RandomNeu$disgust, Top10Neu$disgust, var.equal=TRUE, paired=FALSE)
+t.test(RandomNeu$surprise, Top10Neu$surprise, var.equal=TRUE, paired=FALSE)
+
+t.test(RandomPos$neutral, Top10Neu$neutral, var.equal=TRUE, paired=FALSE)
+t.test(RandomPos$happy, Top10Neu$happy, var.equal=TRUE, paired=FALSE)
+t.test(RandomPos$sad, Top10Neu$sad, var.equal=TRUE, paired=FALSE)
+t.test(RandomPos$fear, Top10Neu$fear, var.equal=TRUE, paired=FALSE)
+t.test(RandomPos$anger, Top10Neu$anger, var.equal=TRUE, paired=FALSE)
+t.test(RandomPos$disgust, Top10Neu$disgust, var.equal=TRUE, paired=FALSE)
+t.test(RandomPos$surprise, Top10Neu$surprise, var.equal=TRUE, paired=FALSE)
 
 a <- c(11,11,12,12,13,11,11,10,10,11,11,12,13,13,14,15,14,11,13,12,12,11,11,11,10,10,9,10)
 b <- c(21,21,22,22,23,21,21,20,20,21,21,22,23,23,24,25,24,21,23,22,22,21,21,21,20,20,19,20)
