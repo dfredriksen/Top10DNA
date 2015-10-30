@@ -5,6 +5,7 @@ library(gridExtra)
 library(lubridate)
 library(data.table)
 Random <- read.csv("Random.csv")
+Top10 <- read.csv("Top10.csv")
 PrimaryEmotions <- table(Random$primary, Random$valence)
 barplot(PrimaryEmotions, main="Primary Emotion Frequency By Valence", xlab="Valence", ylab="Frequency", col=c("gray", "green", "blue","yellow","red","black","purple","white"), names.arg=c("Negative","Neutral","Positive"), legend = c("Neutral","Happy","Sad","Fear","Anger","Disgust","Surprise","multi"), ylim=c(0,450), beside=TRUE)
 dev.copy2pdf(file='PrimaryEmotions.pdf')
@@ -376,3 +377,39 @@ dev.copy2pdf(file='AverageRandomWeights.pdf', width=10)
 barplot(PrimaryEmotions, main="Primary Emotion Frequency By Valence", xlab="Valence", ylab="Frequency", col=c("gray", "green", "blue","yellow","red","black","purple","white"), names.arg=c("Negative","Neutral","Positive"), legend = c("Neutral","Happy","Sad","Fear","Anger","Disgust","Surprise","multi"), ylim=c(0,450), beside=TRUE)
 dev.copy2pdf(file='PrimaryEmotions.pdf')
 
+Random$row_id <- NULL
+Random$path <- NULL
+Random$views <- NULL
+Random$pathTail <- NULL
+Random$story_id <- NULL
+Random$headline <- NULL
+Random$teaser <- NULL
+Random$primary_emotion <- NULL
+
+Top10$row_id <- NULL
+Top10$path <- NULL
+Top10$views <- NULL
+Top10$pathTail <- NULL
+Top10$story_id <- NULL
+Top10$headline <- NULL
+Top10$teaser <- NULL
+Top10$primary_emotion <- NULL
+
+RandomNeg <- Random[Random$valence == "-1",2:8]
+RandomNeu <- Random[Random$valence == "0",2:8]
+RandomPos <- Random[Random$valence == "1",2:8]
+Top10Neg <- Random[Random$valence == "-1",2:8]
+Top10Neu <- Random[Random$valence == "0",2:8]
+Top10Pos <- Random[Random$valence == "1",2:8]
+
+t.test(RandomNeg$neutral, Top10Neg$neutral, var.equal=TRUE, paired=FALSE)
+t.test(RandomNeg$happy, Top10Neg$happy, var.equal=TRUE, paired=FALSE)
+t.test(RandomNeg$sad, Top10Neg$sad, var.equal=TRUE, paired=FALSE)
+t.test(RandomNeg$fear, Top10Neg$fear, var.equal=TRUE, paired=FALSE)
+t.test(RandomNeg$anger, Top10Neg$anger, var.equal=TRUE, paired=FALSE)
+t.test(RandomNeg$disgust, Top10Neg$disgust, var.equal=TRUE, paired=FALSE)
+t.test(RandomNeg$surprise, Top10Neg$surprise, var.equal=TRUE, paired=FALSE)
+
+a <- c(11,11,12,12,13,11,11,10,10,11,11,12,13,13,14,15,14,11,13,12,12,11,11,11,10,10,9,10)
+b <- c(21,21,22,22,23,21,21,20,20,21,21,22,23,23,24,25,24,21,23,22,22,21,21,21,20,20,19,20)
+t.test(a,b, var.equal=FALSE, paired=FALSE)
